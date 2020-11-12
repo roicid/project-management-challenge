@@ -20,13 +20,13 @@ Agreguemos un archivo project.js en la carpeta models:
 
 // requerimos el paquete mongoose y a su 'Schema'
 
-// declaramos un nuevo Schema en la variable 'projectSchema'
+// declaramos un nuevo Schema en la constante 'projectSchema'
 
 const projectSchema = new Schema({
   // ...
 });
 
-// utilizamos 'mongoose.model' para definir el modelo con el schema que acabamos de definir...
+// utilizamos 'mongoose.model' para crear el modelo con el schema que acabamos de definir...
 
 // ... y exportamos dicho modelo
 ```
@@ -40,13 +40,13 @@ Nuestros proyectos tendrán algunas tareas, así que veamos qué podemos hacer c
 
 // requerimos el paquete mongoose y a su 'Schema'
 
-// declaramos un nuevo Schema en la variable 'taskSchema'
+// declaramos un nuevo Schema en la constante 'taskSchema'
 
 const taskSchema = new Schema({
   // ...
 });
 
-// utilizamos 'mongoose.model' para definir el modelo con el schema que acabamos de definir...
+// utilizamos 'mongoose.model' para crear el modelo con el schema que acabamos de definir...
 
 // ... y exportamos dicho modelo
 ```
@@ -152,13 +152,13 @@ Lo primero que haremos es permitir que nuestros usuarios agreguen algunos proyec
 ```js
 // ---> routes/project-routes.js <---
 
-// requerimos 'express', 'mongoose' y asignamos 'express.Router' en una variable
+// requerimos 'express', 'mongoose' y asignamos el resultado de ejecutar 'express.Router' en una variable
 
-// a su vez, requerimos nuestros modelos antes creados
+// a su vez, requerimos nuestros modelos antes creados, asignándolos a constantes
 
 // POST route => para crear un nuevo project
 router.post("/projects", (req, res, next) => {
-  // utilizamos el método create de mongoose y pasamos los parámetros del cuerpo para crear nuestro nuevo 'project' y guardarlo en BDD.
+  // utilizamos el método create de mongoose y pasamos los parámetros del body para crear nuestro nuevo 'project' y guardarlo en BDD.
 
   Project.create({
     // datos provenientes del body
@@ -174,7 +174,7 @@ router.post("/projects", (req, res, next) => {
 module.exports = router;
 ```
 
-Aquí utilizamos el método create() y pasamos los parámetros del cuerpo en la solicitud para crear un nuevo proyecto y guardarlo en la base de datos.
+Aquí utilizamos el método create() y pasamos los parámetros del body en la solicitud para crear un nuevo proyecto y guardarlo en la base de datos.
 Ahora, vamos a app.js y, hacia el final del archivo, solicitemos el archivo project-routes.js recién creado. No olvides agregarles el prefijo api (este paso no es obligatorio pero nos ayudará a largo plazo).
 
 ```js
@@ -215,10 +215,10 @@ router.get('/projects', (req, res, next) => {
 //  1ro - utilizamos la referencia a nuestro modelo de projects;
 
 
-//  2do - usamos el método find() para recuperar TODOS los projects
+//  2do - usamos el método find() para recuperar TODOS los projects y populamos el campo 'tasks'
 
 
-//  3ro - utilizamos una promesa de Javascript para obtener una respuesta de nuestra BDD y la recuperamos como un objecto json.
+//  3ro - utilizamos una promesa de Javascript (o async/await) para obtener una respuesta de nuestra BDD y la recuperamos como un objecto json.
 
 
 //  4to - atrapamos, si los hay, los errores con un catch en forma de json.
@@ -246,7 +246,7 @@ router.get('/projects/:id', (req, res, next)=>{
 
   // en caso que no, devolvemos una respuesta con un status 400, en forma de json con un mensaje de 'Specified id is not valid', y salimos de la función.
 
-  //  utilizamos el método 'findById' y el id que validamos antes para encontrar nuestro projecto.
+  //  utilizamos el método 'findById' y el id que validamos antes para encontrar nuestro projecto. Debemos usar promises o async/await.
 
   // nuestros projects tienen un array de tasks, por lo que podemos utilizar el método populate para obtener todos esos objectos (una vez hecha la búsqueda)
 
@@ -267,7 +267,7 @@ router.put('/projects/:id', (req, res, next)=>{
 
   // utilizamos el método 'findByIdAndUpdate' y el id que validamos antes para encontrar y actualizar nuestro project (con el contenido de nuestro req.body)
 
-  // ...then, devolvemos la respuesta con un message, en json, de `Project with ${req.params.id} is updated successfully.`
+  // ...then (o async/await), devolvemos la respuesta con un message, en json, de `Project with ${req.params.id} is updated successfully.`
 
   // en caso contrario, de haber un error, lo capturamos y devolvemos el mismo en forma de json
 
@@ -284,7 +284,7 @@ router.delete('/projects/:id', (req, res, next)=>{
 
   // utilizamos el método 'findByIdAndRemove' y el id que validamos antes para encontrar y borrar nuestro project de nuestra BDD.
 
-  // ...then, devolvemos la respuesta con un message, en json, de `Project with ${req.params.id} is removed successfully.`
+  // ...then (o async/await), devolvemos la respuesta con un message, en json, de `Project with ${req.params.id} is removed successfully.`
 
   // en caso contrario, de haber un error, lo capturamos y devolvemos el mismo en forma de json
 
@@ -324,7 +324,7 @@ router.get("/tasks/:taskId", (req, res, next) => {
 router.post("/tasks", (req, res, next) => {
   // 1ro - utilizamos método create para generar una nueva 'task' con la información proveniente del cuerpo del request.
   // 2do - con la respuesta, haremos una búsqueda del project al cual pertenece el id que está dentro del task, y 'empujaremos' dicha respuesta dentro de nuestro projecto
-  // 3ro - la respuesta, la devolveremos en formato json
+  // 3ro - devolveremos la respuesta en formato json
   // 4tp - en caso de existir un error, lo atraparemos y devolveremos el mismo en forma de json.
 });
 
@@ -335,7 +335,7 @@ router.put("/tasks/:id", (req, res, next) => {
   // Validamos si el valor que recibimos a través de 'req.params.id' es un ObjectId válido (pista: método 'isValid' de MongoDB, retorna un booleano)
   // en caso que no, devolvemos una respuesta con un status 400, en forma de json con un mensaje de 'Specified id is not valid', y salimos de la función.
   // utilizamos el método 'findByIdAndUpdate' y el id que validamos antes para encontrar y actualizar nuestro task (con el contenido de nuestro req.body)
-  // ...then, devolvemos la respuesta con un message, en json, de `Task with ${req.params.id} is updated successfully.`
+  // ...then (o async/await), devolvemos la respuesta con un message, en json, de `Task with ${req.params.id} is updated successfully.`
   // en caso contrario, de haber un error, lo capturamos y devolvemos el mismo en forma de json
 });
 
