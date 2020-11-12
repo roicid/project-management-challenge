@@ -51,13 +51,13 @@ Comenzaremos construyendo el componente `<AddProject />`. Este componente mostra
 // importamos React, React.Component y axios
 
 class AddProject extends Component {
-  //definimos nuestro constructor con props, y definimos un state con dos keys (title y description) con valor de String vacío.
+  //definimos nuestro constructor con props (no es necesario), y definimos un state con dos keys (title y description) con valor de String vacío.
 
   // definimos la función 'handleFormSubmit' para manipular el submit del formulario:
   handleFormSubmit = (event) => {
     // 1ro - evitamos el comportamiento por default que genera el evento 'submit'
 
-    // 2do - definimos las variables que necesitamos pasar a nuestra ruta con su valor en el state (title y description)
+    // 2do - definimos las variables que necesitamos para obtener los valores del state (title y description)
 
     // 3ro - utilizamos axios, y su método "post" para conectar con nuestra ruta del backend que crea un nuevo project. Le pasamos un objeto con las dos variables antes creadas.
     axios
@@ -78,14 +78,14 @@ class AddProject extends Component {
 
   // definimos la función 'handleChange' para manipular los cambios en los inputs del formulario
   handleChange = (event) => {
-    // 1ro - declaramos variables name y value del event.target
+    // 1ro - declaramos variables para los valores name y value del event.target
     // 2do - seteamos para con cada uno de ellos, su homónimo en el state.
   };
 
   render() {
     // 1ro- devolvemos un form, y utilizamos la función para manipular el submit del form (handleFormSubmit)
 
-    // 2do - agregamos al form inputs que estén vinculados con su homónimo en el state (pista: componente controlado) su 'value' y utilizamos el método para manipular los cambios (handleChange)
+    // 2do - agregamos al form inputs que estén vinculados con su homónimo en el state (pista: componente controlado), su 'value' y utilizamos el método para manipular los cambios (handleChange)
 
     // 3ro - agregamos finalmente un input de tipo 'submit' para enviar la información.
     return <div>(...)</div>;
@@ -106,7 +106,7 @@ Importemos el componente `<AddProject />` a App.js y lo renderizaremos allí por
 
 
 // importar React y React.Component
-// importar nuestro fichero .css (si hubiese)
+// importar nuestro fichero .css (si existiera)
 // importamos el componente AddProject que acabamos de crear
 
 class App extends Component {
@@ -137,7 +137,7 @@ Entonces, cuando tenemos al menos un project en nuestra base de datos, procedamo
 // además, importamos a nuestro componente AddProject
 
 
-// 1ro - definiremos nuestro componente como componente de clase. Definiremos constructor y super.
+// 1ro - definiremos nuestro componente como componente de clase. Definiremos constructor y super (opcional).
 class ProjectList extends Component {
   constructor() {
     super();
@@ -150,7 +150,7 @@ class ProjectList extends Component {
 
   getAllProjects = () => {
 
-    // 3.1 - hacemos una llamada axios que 'traiga' nuestros projects a la ruta que creamos específicamente para esa tarea
+    // 3.1 - hacemos una llamada axios a la ruta que creamos específicamente para esa tarea, que 'traiga' nuestros projects
 
     // 3.2 - 'then' utilizaremos la respuesta de dicha llamada para poblar la key que creamos en nuestro state.
 
@@ -160,7 +160,7 @@ class ProjectList extends Component {
 
   render() {
 
-  //5to - renderizamos un mapeo de nuestros lista de proyects y, para cada uno de ellos, llamamos a 'Link' para dirigir al usuario a la página del detalle de cada project (utilizaremos aquí la ruta que creamos para dicho fin)
+  //5to - renderizamos un mapeo de nuestra lista de proyectos y, para cada uno de ellos, usamos 'Link' para dirigir al usuario a la página del detalle de cada project (utilizaremos aquí la ruta que creamos para dicho fin)
 
   //6to - Llamamos a nuestro componente 'AddProject' y le pasamos por props el método que definimos para traer todos nuestros projects.
     return (
@@ -191,7 +191,7 @@ export default ProjectList;
 Veamos qué es interesante aquí:
 
 - utilizamos el método del ciclo de vida de componenteDidMount() para obtener los datos de la API (esta es una práctica muy estándar);
-- usamos map() para enumerar los proyectos (no olvide dar a cada elemento el ID de la base de datos como clave con key = {project.\_id});
+- usamos map() para enumerar los proyectos (no olvide dar a cada elemento el ID de la base de datos como clave con key = {project._id});
 - usamos el componente `<Link />` de la biblioteca react-router-dom para poder cambiar dinámicamente la URL y, en nuestro caso, para ir a la página de detalles del proyecto (eso es lo siguiente en lo que debemos trabajar);
 - vemos que el componente `<AddProject />` estará realmente anidado dentro de `<ProjectList />`, así que vamos y elimínelo de App.js y también dejemos de comentar this.props.getData() dentro de `<AddProject />`;
 - comentamos la línea de project description ya que construiremos la página de detalles, la descripción será visible allí.
@@ -219,7 +219,7 @@ ReactDOM.render(
 serviceWorker.unregister();
 ```
 
-Ahora que 'ProjectList' tiene anidado en si a 'AddProject', podemos reemplazarlo en nuestro componente 'App':
+Ahora que 'ProjectList' tiene anidado a 'AddProject', podemos reemplazarlo en nuestro componente 'App':
 
 ```jsx
 // ---> App.js <---
@@ -255,7 +255,7 @@ class ProjectDetails extends Component {
 
   // 1ro - definimos nuestra clase ProjectDetails
 
-  // 2do - definimos su constructor con 'props' como argumento (ya que pasaremos los 'details' desde un componente padre)
+  // 2do - definimos su constructor con 'props' como argumento (ya que pasaremos los 'details' desde un componente padre). Esto es opcional.
 
     // 3ro - utilizamos el método 'super' para utilizar dichas 'props'
 
@@ -293,7 +293,7 @@ Nuestro Navbar.js tendrá algunos enlaces en el futuro, pero en este momento sol
 
 // importamos React y 'Link' del paquete react-router-dom
 
-// declaramos una función 'navbar' que devuelva, por el momento, una navbar con un único 'Link' dirigido a nuestra ruta '/projects'
+// declaramos un componente funcional 'navbar' que devuelva, por el momento, una navbar con un único 'Link' dirigido a nuestra ruta '/projects'
 const navbar = () => {
   return <nav className="nav-style">// ...</nav>;
 };
@@ -363,7 +363,7 @@ class ProjectDetails extends Component {
   };
 
   render() {
-    // retornamos en el render al title y description que tenemos en nuestro state (actualizado por nuestro método getSingleProject) y llamamos al componente 'Link' que dirija hacía nuestra ruta '/proyects'
+    // retornamos en el render al title y description que tenemos en nuestro state (actualizado por nuestro método getSingleProject) y usamos al componente 'Link' para ir hacía nuestra ruta '/projects'
     return <div>// ...</div>;
   }
 }
@@ -386,7 +386,7 @@ El próximo desafío es mostrar el formulario de edición y actualizar el proyec
 
 // declaramos nuestra clase 'EditProject'
 class EditProject extends Component {
-  // definimos constructor y super para utilizar los props que recibirá este componente
+  // definimos constructor y super para utilizar los props que recibirá este componente (opcional)
   constructor(props) {
     super(props);
     // definimos nuestro state con las keys del project que estaremos editando (title y description)
@@ -399,9 +399,9 @@ class EditProject extends Component {
 
   // definimos un método que se encargue del submit de nuestro form de edición
   handleFormSubmit = (event) => {
-    // 1ro -  declaramos dos variables con nuestras keys del state (title y descripcion)
+    // 1ro -  declaramos dos variables con los valores de nuestras keys del state (title y descripcion)
 
-    // 2do - nos garantizamos evitar el comportamiento default al hacer el submit de un formulario.
+    // 2do - evitamos el comportamiento default al hacer el submit de un formulario.
 
     // 3ro - realizamos una llamada axios a nuestra ruta PUT del back encargada de actualizar nuestros projects, y le pasamos nuestras variables antes definidas para poder actualizar.
 
@@ -476,7 +476,7 @@ class ProjectDetails extends Component {
         // validamos que, si no existe key 'title' en nuestro state, deberiamos ejecutar el método que solicita los detalles del project individual
 
           } else {
-            // retornamos el componente EditProject y le pasamos por props al project a editar (theProject), a getTheProject(ver componente EditProject) y al resto de props del componente ProjectDetails
+            // retornamos el componente EditProject y le pasamos por props el project a editar (theProject), a getTheProject(ver componente EditProject) y al resto de props del componente ProjectDetails
             return <EditProject theProject={this.state} getTheProject={this.getSingleProject} {...this.props} />
           }
     }
@@ -511,7 +511,7 @@ Nuestro componente `<ProjectDetails />` completo al final se ve así:
 
 // ...
 
-  // declaramos método de borraro de projecto
+  // declaramos método de borrado de proyecto
   deleteProject = () => {
     // traemos valor de params del objeto que llega por props llamado 'match'
 
@@ -548,7 +548,7 @@ Para comenzar a trabajar en esta parte de la aplicación, creemos primero la car
 
 // importamos React, React.Component y axios
 
-// declaramos nuestro componente AddTask, con su constructor y super, que recibirán props del componente padre
+// declaramos nuestro componente AddTask, con su constructor y super (opcional), que recibirán props del componente padre
 class AddTask extends Component {
   constructor(props) {
     super(props);
@@ -565,7 +565,7 @@ class AddTask extends Component {
 
     // 'then' llamamos al método 'getTheProject' que recibimos desde props a través de nuestro componente padre
 
-    // re-seteamos los valores de state a strings vacíos para volver al comienzo
+    // reiniciamos los valores de state a strings vacíos para volver al comienzo
 
     // en caso de haber error, lo atrapamos y mostramos por consola.
   };
@@ -704,7 +704,7 @@ class ProjectList extends Component {
                 <Link to={`/projects/${project._id}`}>
                   <h3>{project.title}</h3>
                 </Link>
-                {/*  agregamos una visualización de las tareas que existen a través de un mapeo de las tasks de cada project, y lo retornamos dentro de un <ul> (no olvidar el 'key')   */}
+                {/*  agregamos una visualización de las tareas que existen a través de un mapeo de las tasks de cada project, y lo retornamos dentro de un <ul> (no olvidar la 'key')   */}
                 <ul>
                   
                   //...
@@ -735,7 +735,7 @@ Terminaremos la lección mostrando la página de task details, así que creemos 
 
 // importamos React, React.Component y axios
 
-// definimos nuestro componente TaskDetails, su constructor y super, los cuales recibiran 'props' desde su componente padre
+// definimos nuestro componente TaskDetails, su constructor y super (opcional), los cuales recibiran 'props' desde su componente padre
 class TaskDetails extends Component {
   constructor(props) {
     super(props);
@@ -752,7 +752,7 @@ class TaskDetails extends Component {
     
     // 2.2 - realizamos una llamada axios GET a nuestra ruta del backend creada para traer la información de una task individual
     
-    // 2.3 - 'then', con al respuesta, seteamos el valor de nuestro state con el objeto que recibimos como respuesta.
+    // 2.3 - 'then', con la respuesta, seteamos el valor de nuestro state con el objeto que recibimos como respuesta.
 
     // 3ro - en caso de que hubiese un error, lo atrapamos y mostramos por consola.
   };
