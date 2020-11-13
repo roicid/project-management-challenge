@@ -33,7 +33,7 @@ const projectSchema = new Schema({
 
 Nuestros proyectos tendrán un título y una descripción tanto de tipo String como tasks de tipo ObjectId que hagan referencia al Task model. Más adelante agregaremos la owner property. Mongo agregará automáticamente un campo de id único generado automáticamente, por lo que no necesitamos especificarlo.
 
-Nuestros proyectos tendrán algunas tareas, así que veamos qué podemos hacer con su estructura de datos. Dentro de la carpeta de models, cree un nuevo archivo task.js. Las tareas tendrán las siguientes propiedades:
+Nuestros proyectos tendrán algunas tareas, así que veamos qué podemos hacer con su estructura de datos. Dentro de la carpeta de models, cree un nuevo archivo task.js. Las tareas tendrán las siguientes propiedades: title (String), description(String), project (type: Schema.Types.ObjectId, ref: "Project").
 
 ```js
 // ---> models/task.js <---
